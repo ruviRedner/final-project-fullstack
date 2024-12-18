@@ -1,13 +1,12 @@
 {
-  "name": "serversupermarket",
+  "name": "terror",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "author": "",
   "license": "ISC",
   "scripts": {
     "test": "jest --detectOpenHandles dist",
-    "dev": "nodemon dist/app.js",
-    "start": "node dist/app.js"
+    "start": "nodemon dist/app.js"
 
   },
   "description": "",
