@@ -37,3 +37,30 @@ export const createNewEvent = async (newEvent: Terror) => {
     return handleBadRequest("Invalid data", error);
   }
 };
+
+export const deleteEvent = async (id: string)=> {
+  try {
+    if(!id) {
+      throw new Error("ID is requierd");
+    }
+    const findId = terrorModel.findById(id);
+    if(!findId) {
+      throw new Error("ID not found");
+    }
+    await terrorModel.deleteOne(findId);
+    return {message: "Event deleted successfully"};
+    
+  } catch (error) {
+    return handleBadRequest("Failed to delete event", error);
+    
+  }
+}
+export const updataEvent= async (id:string,update:string) => {
+  try {
+   
+    
+  } catch (error) {
+    return handleBadRequest("Bad Request",error)
+    
+  }
+}
