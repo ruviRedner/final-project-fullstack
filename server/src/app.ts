@@ -6,6 +6,8 @@ import http from "http";
 
 import "dotenv/config";
 import { getDeadliestRegionsByOrganization, getIncidentsInYearRange, getListAttackTypeByTheMostCasualties, getOganizationsWithTheMostIncidentByRegion, getRecentYearsData, getRegionWithTheHighestAverageCasualties, getTerroristGroupWithTheMostCasualties, getTop5OrganizationsWithTheMostIncidentByRegion, getUniceIncidentInEveryMonthInYear, seed } from "./service/terror.service";
+import terrorRouter from "./routes/terror.router";
+import orgRouter from "./routes/org.router";
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,6 +17,8 @@ export const server = http.createServer(app);
 app.use(cors());
 connectDB();
 app.use(express.json());
+app.use("/api/analysis/",terrorRouter)
+app.use("api/relationships/",orgRouter)
 
 app.get("/ping", (req: Request, res: Response) => {
   res.status(200).send("pong");
