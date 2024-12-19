@@ -141,7 +141,7 @@ export const getUniceIncidentInEveryMonthInYear = async (year: string) => {
         $group: {
           _id: { month: "$imonth", year: "$iyear", orgName: "$gname" },
           incident: {
-            $sum: 1,
+            $count:{},
           },
         },
       },
