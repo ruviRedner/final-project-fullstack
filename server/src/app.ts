@@ -11,6 +11,8 @@ import terrorRouter from "./routes/terror.router";
 import orgRouter from "./routes/org.router";
 import CreateRouter from "./routes/create.router";
 import { handelShackConnection } from "./socket/io";
+import { Terror } from "./models/terrorModel";
+import { TerrorResponce } from "./types/responce";
 
 const PORT = process.env.PORT || 3000;
 
@@ -37,7 +39,7 @@ app.get("/ping", (req: Request, res: Response) => {
 // getListAttackTypeByTheMostCasualties() 
 // getRegionWithTheHighestAverageCasualties()
 // getTerroristGroupWithTheMostCasualties(")
-// getUniceIncidentInEveryMonthInYear(1970)
+// getUniceIncidentInEveryMonthInYear("2021")
 // getIncidentsInYearRange(2010,2020)
 // getRecentYearsData(10)
 // getTop5OrganizationsWithTheMostIncidentByRegion("East Asia")
@@ -47,5 +49,6 @@ io.on("connection", handelShackConnection);
 server.listen(PORT, () =>
   console.log(`Listening on port ${PORT},visit http://localhost:${PORT}`)
 );
+
 
 
