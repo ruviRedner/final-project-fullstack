@@ -55,8 +55,16 @@ export const deleteEvent = async (id: string)=> {
     
   }
 }
-export const updataEvent= async (id:string,update:string) => {
+export const updataEvent= async (id:string,update:Terror) => {
   try {
+    if(!id) {
+      throw new Error("ID is required");
+    }
+    const findId = await terrorModel.findByIdAndUpdate(id,{$set:  update}, {new: true});
+    if(!findId) {
+      throw new Error("ID not found");
+    }
+    return findId;
    
     
   } catch (error) {
