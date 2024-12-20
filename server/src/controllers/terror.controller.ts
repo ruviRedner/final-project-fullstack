@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
-  getDeadliestRegionsByOrganization,
+  
+  getDeadliestRegionsWithOrWithoutCoordinates,
   getIncidentsInYearRange,
   getListAttackTypeByTheMostCasualties,
   getOganizationsWithTheMostIncidentByRegion,
@@ -114,7 +115,7 @@ export const fetchIncidentOfTheMostDhed = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await getDeadliestRegionsByOrganization(
+    const result = await getDeadliestRegionsWithOrWithoutCoordinates(
       req.params.organizationName
     );
 
