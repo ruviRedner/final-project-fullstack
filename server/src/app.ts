@@ -6,7 +6,7 @@ import http from "http";
 import { Server } from "socket.io";
 
 import "dotenv/config";
-import { getDeadliestRegionsByOrganization, getIncidentsInYearRange, getListAttackTypeByTheMostCasualties, getOganizationsWithTheMostIncidentByRegion, getRecentYearsData, getRegionWithTheHighestAverageCasualties, getTerroristGroupWithTheMostCasualties, getTop5OrganizationsWithTheMostIncidentByRegion, getUniceIncidentInEveryMonthInYear, seed } from "./service/terror.service";
+import { getDeadliestRegionsWithOrWithoutCoordinates, getIncidentsInYearRange, getListAttackTypeByTheMostCasualties, getOganizationsWithTheMostIncidentByRegion, getRecentYearsData, getRegionWithTheHighestAverageCasualties, getTerroristGroupWithTheMostCasualties, getTop5OrganizationsWithTheMostIncidentByRegion, getUniceIncidentInEveryMonthInYear, seed } from "./service/terror.service";
 import terrorRouter from "./routes/terror.router";
 import orgRouter from "./routes/org.router";
 import CreateRouter from "./routes/create.router";
@@ -45,6 +45,7 @@ app.get("/ping", (req: Request, res: Response) => {
 // getTop5OrganizationsWithTheMostIncidentByRegion("East Asia")
 // getOganizationsWithTheMostIncidentByRegion("East Asia")
 // getDeadliestRegionsByOrganization("Unknown")
+// getDeadliestRegionsWithOrWithoutCoordinates("Black Nationalists")
 io.on("connection", handelShackConnection);
 server.listen(PORT, () =>
   console.log(`Listening on port ${PORT},visit http://localhost:${PORT}`)
