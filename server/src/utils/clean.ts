@@ -6,4 +6,4 @@ export const cleanObject = (obj: Record<string, any>): Record<string, any> => {
       }
     }
     return cleanedObj;
-  };
+  }; 
