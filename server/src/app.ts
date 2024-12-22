@@ -37,8 +37,6 @@ app.get("/ping", (req: Request, res: Response) => {
 // seed() 
 // getRegionWithTheHighestAverageCasualties()
 // getTerroristGroupWithTheMostCasualties()
-// getUniceIncidentInEveryMonthInYear("2021")
-// getIncidentsInYearRange("2010","2020")
 // getRecentYearsData(10)
 // getTop5OrganizationsWithTheMostIncidentByRegion("East Asia")
 // getOganizationsWithTheMostIncidentByRegion("East Asia")
