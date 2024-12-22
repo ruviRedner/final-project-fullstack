@@ -7,6 +7,9 @@ import GraphByAttack from "./pages/graph/graphByAttack/GraphByAttack";
 import ManegeGraph from "./pages/manegeGraph/ManegeGraph";
 import GraphByYear from "./pages/graph/GraphByYear/GraphByYearAndManth";
 import GrhaphByRange from "./pages/graph/graphRangeYear/GrhaphByRange";
+import GraphByNumYears from "./pages/graph/graphByNumYears/GraphByNumYears";
+import GraphForIncidentByRegion from "./pages/graph/graphForIncidentByRegion/GraphForIncidentByRegion";
+import GraphByOrg from "./pages/graph/graphByOrg/GraphByOrg";
 // import { TerrorResponce } from './types/responce';
 // import { Terror } from './types/newTerror';
 export const socket = io("http://localhost:9000");
@@ -185,6 +188,9 @@ const App: React.FC = () => {
           <Route path="/graph" element={<GraphByAttack />} />
           <Route path="/year" element={<GraphByYear />} />
           <Route path="/year-range" element={<GrhaphByRange />} />
+          <Route path="/year-number" element={<GraphByNumYears />} />
+          <Route path="/region-top" element={<GraphForIncidentByRegion />} />
+          <Route path="/year-org" element={<GraphByOrg />} />
           <Route path="/graph-manege" element={<ManegeGraph />} />
         </Routes>
       </div>
