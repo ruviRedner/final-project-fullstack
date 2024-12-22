@@ -209,11 +209,18 @@ export const getRecentYearsData = async (range: string) => {
       },
       {
         $group: {
-          _id: { month: "$imonth", year: "$iyear" },
+          _id: {  year: "$iyear" },
           incident: { $sum: 1 },
         },
       },
-      { $sort: { "_id.year": 1, "_id.month": 1 } },
+      { $sort: { "_id.year": 1 } },
+      {
+        $project: {
+          _id: 0,
+          year: "$_id.year",
+          incident: "$incident",
+        },
+      }
     ]);
 
     console.log(data);
@@ -222,29 +229,39 @@ export const getRecentYearsData = async (range: string) => {
     return handleBadRequest("Bad request", err);
   }
 };
-export const getTop5OrganizationsWithTheMostIncidentByRegion = async (
-  region: string
+export const getTop5OrganizationsWithTheMostIncidentByRegion = async ( 
+  region: string,
+  isGraph:boolean = false
 ) => {
   try {
-    const data = await terrorModel.aggregate([
-      {
-        $match: { region_txt: region },
-      },
+    
+    const pipeline:PipelineStage[] = [
+      { $match: { region_txt: region } },
       {
         $group: {
           _id: { name: "$gname", lat: "$latitude", lng: "$longitude" },
-          incident: {
-            $sum: 1,
-          },
+          incident: { $sum: 1 },
         },
       },
+      { $sort: { incident: -1 } },
+      { $limit: 5 },
       {
-        $sort: { incident: -1 },
+        $project: {
+          orgName: "$_id.name",
+          incident: 1,
+          lat: "$_id.lat",
+          lng: "$_id.lng",
+          _id: 0,
+        },
       },
-      {
-        $limit: 5,
-      },
-    ]);
+    ];
+
+    
+    if (isGraph) {
+      pipeline.unshift({ $match: { gname: { $ne: "Unknown" } } });
+    }
+
+    const data = await terrorModel.aggregate(pipeline);
     console.log(data);
     return data;
   } catch (error) {
@@ -261,7 +278,7 @@ export const getOganizationsWithTheMostIncidentByRegion = async (
       },
       {
         $group: {
-          _id: { name: "$gname", lat: "$latitude", lng: "$longitude" },
+          _id: { orgName: "$gname", lat: "$latitude", lng: "$longitude" },
           incident: {
             $sum: 1,
           },
@@ -270,7 +287,16 @@ export const getOganizationsWithTheMostIncidentByRegion = async (
       {
         $sort: { incident: -1 },
       },
-      { $project: { orgName: "$_id", incident: 1, _id: 0 } },
+      {$limit:20},
+      {
+        $project:{
+          orgName: "$_id.orgName",
+          incident: 1,
+          lat: "$_id.lat",
+          lng: "$_id.lng",
+          _id: 0,
+        }
+      }
     ]);
     console.log(data);
     return data;
@@ -383,21 +409,18 @@ export const getIncidentsByOrganization = async (organizationName: string) => {
     ]);
 
     console.log(data);
-    return {
-      mode: "organization",
-      organization: organizationName,
-      data,
-    };
+     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
   }
 };
 
-export const getTopOrganizationsByYear = async (year: number) => {
+export const getTopOrganizationsByYear = async (year: string) => {
   try {
+    const yearNum = parseInt(year);
     const data = await terrorModel.aggregate([
       {
-        $match: { iyear: year },
+        $match: { iyear: yearNum },
       },
       {
         $group: {
@@ -418,11 +441,7 @@ export const getTopOrganizationsByYear = async (year: number) => {
     ]);
 
     console.log(data);
-    return {
-      mode: "year",
-      year,
-      data,
-    };
+    return data
   } catch (error) {
     return handleBadRequest("Bad request", error);
   }
