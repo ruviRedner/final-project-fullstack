@@ -6,8 +6,13 @@ import {
   updataEvent,
 } from "../service/create.service";
 import {
+  getIncidentsByOrganization,
   getIncidentsInYearRange,
   getListAttackTypeByTheMostCasualties,
+  getOganizationsWithTheMostIncidentByRegion,
+  getRecentYearsData,
+  getTop5OrganizationsWithTheMostIncidentByRegion,
+  getTopOrganizationsByYear,
   getUniceIncidentInEveryMonthInYear,
 } from "../service/terror.service";
 
@@ -57,24 +62,84 @@ export const handelShackConnection = (client: Socket) => {
       callback({ success: false, message: (error as Error).message });
     }
   });
-  client.on("get2", async (year:string, callback) => {
+  client.on("get2", async (year: string, callback) => {
     try {
-      
       const result = await getUniceIncidentInEveryMonthInYear(year);
-      
+
       callback({ success: true, data: result });
     } catch (error) {
       callback({ success: false, message: (error as Error).message });
     }
   });
-  client.on("get3", async (data:{startYear:string,endYear:string}, callback) => {
+  client.on(
+    "get3",
+    async (data: { startYear: string; endYear: string }, callback) => {
+      try {
+        const result = await getIncidentsInYearRange(
+          data.startYear,
+          data.endYear
+        );
+
+        callback({ success: true, data: result });
+      } catch (error) {
+        callback({ success: false, message: (error as Error).message });
+      }
+    }
+  );
+  client.on("get4", async (num: string, callback) => {
     try {
-      const result = await getIncidentsInYearRange(data.startYear,data.endYear);
-      
+      const result = await getRecentYearsData(num);
+
       callback({ success: true, data: result });
     } catch (error) {
       callback({ success: false, message: (error as Error).message });
     }
+  });
+  client.on(
+    "get5",
+    async (data: { region: string; isGraph: boolean }, callback) => {
+      try {
+        const result = await getTop5OrganizationsWithTheMostIncidentByRegion(
+          data.region,
+          data.isGraph
+        );
 
-  })
+        callback({ success: true, data: result });
+      } catch (error) {
+        callback({ success: false, message: (error as Error).message });
+      }
+    }
+  );
+  client.on("get6", async (region: string, callback) => {
+    try {
+      const result = await getOganizationsWithTheMostIncidentByRegion(region);
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
+  client.on("get7", async (year:string,callback) => {
+    try {
+      const result = await getTopOrganizationsByYear(year);
+      callback({ success: true, data: result });
+      
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+
+      
+    }
+  });
+  client.on("get8",async (orgName:string,callback) =>{
+    try {
+      const result = await getIncidentsByOrganization(orgName);
+      callback({ success: true, data: result });
+      
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+      
+    }
+  }
+
+  )
+
 };
