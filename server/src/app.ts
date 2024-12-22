@@ -37,13 +37,13 @@ app.get("/ping", (req: Request, res: Response) => {
 // seed() 
 // getRegionWithTheHighestAverageCasualties()
 // getTerroristGroupWithTheMostCasualties()
-// getRecentYearsData(10)
-// getTop5OrganizationsWithTheMostIncidentByRegion("East Asia")
+// getRecentYearsData("10")
+// getTop5OrganizationsWithTheMostIncidentByRegion("East Asia",true)
 // getOganizationsWithTheMostIncidentByRegion("East Asia")
 // getDeadliestRegionsByOrganization("Unknown")
 // getDeadliestRegionsWithOrWithoutCoordinates("Black Nationalists")
 // getIncidentsByOrganization("Unknown")
-// getTopOrganizationsByYear(1970)
+// getTopOrganizationsByYear("1970")
 io.on("connection", handelShackConnection);
 server.listen(PORT, () =>
   console.log(`Listening on port ${PORT},visit http://localhost:${PORT}`)
