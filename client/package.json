@@ -10,11 +10,26 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/g2plot": "^2.4.32",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fluentui/react-charts-preview": "^0.1.5",
+    "@fluentui/react-components": "^9.56.8",
+    "@mui/material": "^6.2.1",
+    "@mui/styled-engine-sc": "^6.2.1",
+    "@mui/x-charts": "^7.23.2",
+    "@mui/x-charts-pro": "^7.23.2",
+    "@opd/g2plot-react": "^2.13.5",
+    "add": "^2.0.6",
+    "gsap": "^3.12.5",
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
-    "socket.io-client": "^4.8.1"
+    "react-router": "^7.1.0",
+    "react-router-dom": "^7.1.0",
+    "socket.io-client": "^4.8.1",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
