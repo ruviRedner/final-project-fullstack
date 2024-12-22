@@ -2,6 +2,7 @@ import { Socket } from "socket.io";
 import { io } from "../app";
 import { Terror } from "../models/terrorModel";
 import { createNewEvent, deleteEvent, updataEvent } from "../service/create.service";
+import { getListAttackTypeByTheMostCasualties, getRegionWithTheHighestAverageCasualties } from "../service/terror.service";
 
 export const handelShackConnection = (client: Socket) => {
   console.log(`[socket.io]New Connection ${client.id} `);
@@ -37,5 +38,15 @@ export const handelShackConnection = (client: Socket) => {
     } catch (error) {
       callback({ success: false, message: "event updated went wrong" });
     }
+  })
+  client.on("get1",async (callback) => {
+    try {
+      const result = await getListAttackTypeByTheMostCasualties(
+      );
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+
   })
 };
