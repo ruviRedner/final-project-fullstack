@@ -14,6 +14,15 @@ const ManegeGraph: React.FC = () => {
   const handelRange = () => {
     navigate("/year-range");
   };
+  const handelYearNum = () => {
+    navigate("/year-number");
+  };
+  const handeltheTop = () => {
+    navigate("/region-top");
+  };
+  const handelOrg = () => {
+    navigate("/year-org");
+  };
   return (
     <div>
       <h1>ניהול גרפים</h1>
@@ -23,16 +32,11 @@ const ManegeGraph: React.FC = () => {
         </Button>
         <Button onClick={handelYear} variant="contained">כמות תקריות לפי שנים</Button>
         <Button onClick={handelRange} variant="contained">כמות תקריות בטווח שנים</Button>
-        <Button variant="contained">כמות תקריות במספר שנים אחורה</Button>
-        <Button variant="contained">
-          כמות תקריות בחמשת ארגוני טרור הבולטים לפי אזור
-        </Button>
-        <Button variant="contained">כמות תקריות מהגדול לקטן לכל האזורים</Button>
-        <Button variant="contained">
+        <Button onClick={handelYearNum} variant="contained">כמות תקריות במספר שנים אחורה</Button>
+        
+        <Button onClick={handeltheTop} variant="contained">הארגונים הכי בולטים לפי אזור</Button>
+        <Button onClick={handelOrg} variant="contained">
           כמות תקריות לפי שנים על ידי בחירת ארגון
-        </Button>
-        <Button variant="contained">
-          כמות תקריות לפי ארגונים על ידי בחירת שנה
         </Button>
       </div>
     </div>
