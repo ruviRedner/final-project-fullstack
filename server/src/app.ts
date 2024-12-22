@@ -6,13 +6,12 @@ import http from "http";
 import { Server } from "socket.io";
 
 import "dotenv/config";
-import { getDeadliestRegionsWithOrWithoutCoordinates, getIncidentsInYearRange, getListAttackTypeByTheMostCasualties, getOganizationsWithTheMostIncidentByRegion, getRecentYearsData, getRegionWithTheHighestAverageCasualties, getTerroristGroupWithTheMostCasualties, getTop5OrganizationsWithTheMostIncidentByRegion, getUniceIncidentInEveryMonthInYear, seed } from "./service/terror.service";
+import { getDeadliestRegionsWithOrWithoutCoordinates, getIncidentsByOrganization, getIncidentsInYearRange, getListAttackTypeByTheMostCasualties, getOganizationsWithTheMostIncidentByRegion, getRecentYearsData, getRegionWithTheHighestAverageCasualties, getTerroristGroupWithTheMostCasualties, getTop5OrganizationsWithTheMostIncidentByRegion, getTopOrganizationsByYear, getUniceIncidentInEveryMonthInYear, seed } from "./service/terror.service";
 import terrorRouter from "./routes/terror.router";
 import orgRouter from "./routes/org.router";
 import CreateRouter from "./routes/create.router";
 import { handelShackConnection } from "./socket/io";
-import { Terror } from "./models/terrorModel";
-import { TerrorResponce } from "./types/responce";
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -36,7 +35,6 @@ app.get("/ping", (req: Request, res: Response) => {
   res.status(200).send("pong");
 });
 // seed() 
-// getListAttackTypeByTheMostCasualties() 
 // getRegionWithTheHighestAverageCasualties()
 // getTerroristGroupWithTheMostCasualties(")
 // getUniceIncidentInEveryMonthInYear("2021")
@@ -46,6 +44,8 @@ app.get("/ping", (req: Request, res: Response) => {
 // getOganizationsWithTheMostIncidentByRegion("East Asia")
 // getDeadliestRegionsByOrganization("Unknown")
 // getDeadliestRegionsWithOrWithoutCoordinates("Black Nationalists")
+// getIncidentsByOrganization("Unknown")
+// getTopOrganizationsByYear(1970)
 io.on("connection", handelShackConnection);
 server.listen(PORT, () =>
   console.log(`Listening on port ${PORT},visit http://localhost:${PORT}`)
