@@ -5,7 +5,6 @@ import {
   getIncidentsInYearRange,
   getListAttackTypeByTheMostCasualties,
   getOganizationsWithTheMostIncidentByRegion,
-  getOrganizationsOrIncidentsByYear,
   getRecentYearsData,
   getRegionWithTheHighestAverageCasualties,
   getTop5OrganizationsWithTheMostIncidentByRegion,
@@ -125,31 +124,31 @@ export const fetchIncidentOfTheMostDhed = async (
   }
 };
 
-export const getOrganizationsOrIncidents = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const { year, organizationName } = req.params;
+// export const getOrganizationsOrIncidents = async (
+//   req: Request,
+//   res: Response
+// ): Promise<void> => {
+//   try {
+//     const { year, organizationName } = req.params;
 
-    if (!year) {
-      res.status(400).json({ error: "Year is required" });
-    }
+//     if (!year) {
+//       res.status(400).json({ error: "Year is required" });
+//     }
 
-    const yearNumber = parseInt(year as string);
+//     const yearNumber = parseInt(year as string);
 
-    if (isNaN(yearNumber)) {
-      res.status(400).json({ error: "Invalid year format" });
-    }
+//     if (isNaN(yearNumber)) {
+//       res.status(400).json({ error: "Invalid year format" });
+//     }
 
-    const result = await getOrganizationsOrIncidentsByYear(
-      yearNumber,
-      organizationName as string
-    );
+//     const result = await getOrganizationsOrIncidentsByYear(
+//       yearNumber,
+//       organizationName as string
+//     );
 
-    res.status(200).json({ success: true, data: result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: (error as Error).message });
-  }
-};
+//     res.status(200).json({ success: true, data: result });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: (error as Error).message });
+//   }
+
