@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router";
 import GraphByAttack from "./pages/graph/graphByAttack/GraphByAttack";
 import ManegeGraph from "./pages/manegeGraph/ManegeGraph";
 import GraphByYear from "./pages/graph/GraphByYear/GraphByYearAndManth";
+import GrhaphByRange from "./pages/graph/graphRangeYear/GrhaphByRange";
 // import { TerrorResponce } from './types/responce';
 // import { Terror } from './types/newTerror';
 export const socket = io("http://localhost:9000");
@@ -183,6 +184,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Main />} />
           <Route path="/graph" element={<GraphByAttack />} />
           <Route path="/year" element={<GraphByYear />} />
+          <Route path="/year-range" element={<GrhaphByRange />} />
           <Route path="/graph-manege" element={<ManegeGraph />} />
         </Routes>
       </div>
