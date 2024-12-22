@@ -46,6 +46,13 @@ export const getListAttackTypeByTheMostCasualties = async () => {
         },
       },
       { $sort: { amount: -1 } },
+      {
+        $project:{
+          _id: 0,
+          attackType: "$_id",
+          totalCasualties: "$amount"
+        }
+      }
     ]);
     console.log(data);
 
@@ -146,6 +153,14 @@ export const getUniceIncidentInEveryMonthInYear = async (year: string) => {
         },
       },
       { $sort: { "_id.year": 1, "_id.month": 1 } },
+      {
+        $project:{
+          _id: 0,
+          year: "$_id.year",
+          month: "$_id.month",
+          incident: "$incident"
+        }
+      }
     ]);
     console.log(data);
   } catch (err) {
@@ -339,79 +354,76 @@ export const getDeadliestRegionsWithOrWithoutCoordinates = async (
 };
 
 
-export const getOrganizationsOrIncidentsByYear = async (
-  year: number,
-  organizationName?: string 
-) => {
+export const getIncidentsByOrganization = async (organizationName:string) => {
   try {
-    if (organizationName) {
-      
-      const data = await terrorModel.aggregate([
-        {
-          $match: { gname: organizationName }, 
+    const data = await terrorModel.aggregate([
+      {
+        $match: { gname: organizationName },
+      },
+      {
+        $group: {
+          _id: "$iyear",
+          totalIncidents: { $sum: 1 },
         },
-        {
-          $group: {
-            _id: "$iyear", 
-            totalIncidents: { $sum: 1 }, 
-          },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          year: "$_id",
+          totalIncidents: 1,
         },
-        {
-          $sort: { _id: 1 }, 
-        },
-        {
-          $project: {
-            _id: 0,
-            year: "$_id", 
-            totalIncidents: 1, 
-          },
-        },
-      ]);
+      },
+    ]);
 
-      console.log(data);
-      return {
-        mode: "organization",
-        organization: organizationName,
-        data,
-      };
-    } else {
-      
-      const data = await terrorModel.aggregate([
-        {
-          $match: { iyear: year }, 
-        },
-        {
-          $group: {
-            _id: "$gname", 
-            totalIncidents: { $sum: 1 }, 
-          },
-        },
-        {
-          $sort: { totalIncidents: -1 }, 
-        },
-        {
-          $limit: 5, 
-        },
-        {
-          $project: {
-            _id: 0,
-            organization: "$_id", 
-            totalIncidents: 1, 
-          },
-        },
-      ]);
-
-      console.log(data);
-      return {
-        mode: "year",
-        year,
-        data,
-      };
-    }
+    console.log(data);
+    return {
+      mode: "organization",
+      organization: organizationName,
+      data,
+    };
   } catch (error) {
     return handleBadRequest("Bad request", error);
   }
 };
+
+export const getTopOrganizationsByYear = async (year:number) => {
+  try {
+    const data = await terrorModel.aggregate([
+      {
+        $match: { iyear: year },
+      },
+      {
+        $group: {
+          _id: "$gname",
+          totalIncidents: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { totalIncidents: -1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          organization: "$_id",
+          totalIncidents: 1,
+        },
+      },
+    ]);
+
+    console.log(data);
+    return {
+      mode: "year",
+      year,
+      data,
+    };
+  } catch (error) {
+    return handleBadRequest("Bad request", error);
+  }
+};
+
 
 
 
