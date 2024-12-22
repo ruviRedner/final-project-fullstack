@@ -3,7 +3,7 @@ import {
   fetchIncidentOfAllOrg,
   fetchIncidentOfTheMostDhed,
   fetchIncidentTop5,
-  getOrganizationsOrIncidents,
+  // getOrganizationsOrIncidents,
 } from "../controllers/terror.controller";
 
 const orgRouter = Router();
@@ -14,9 +14,9 @@ orgRouter.get(
   "deadliest-regions/:organizationName",
   fetchIncidentOfTheMostDhed
 );
-orgRouter.get(
-  "groups-by-year/:year/:organizationName",
-  getOrganizationsOrIncidents
-);
+// orgRouter.get(
+//   "groups-by-year/:year/:organizationName",
+//   // getOrganizationsOrIncidents
+// );
 
 export default orgRouter;
