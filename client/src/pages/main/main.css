@@ -1,0 +1,15 @@
+h1{
+    text-align: center;
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(151, 192, 38);
+}
+.btn{
+    display: flex;
+    justify-content: center;
+    gap: 200px;
+}
