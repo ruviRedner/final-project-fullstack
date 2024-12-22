@@ -11,6 +11,9 @@ const ManegeGraph: React.FC = () => {
   const handelYear = () => {
     navigate("/year");
   };
+  const handelRange = () => {
+    navigate("/year-range");
+  };
   return (
     <div>
       <h1>ניהול גרפים</h1>
@@ -19,9 +22,8 @@ const ManegeGraph: React.FC = () => {
           כמות נפגעים לפי תקיפות
         </Button>
         <Button onClick={handelYear} variant="contained">כמות תקריות לפי שנים</Button>
-        <Button variant="contained">כמות תקריות בטווח שנים</Button>
-        <Button variant="contained">כמות תקריות ב5 שנים אחרונות</Button>
-        <Button variant="contained">כמות תקריות ב10 שנים אחרונות</Button>
+        <Button onClick={handelRange} variant="contained">כמות תקריות בטווח שנים</Button>
+        <Button variant="contained">כמות תקריות במספר שנים אחורה</Button>
         <Button variant="contained">
           כמות תקריות בחמשת ארגוני טרור הבולטים לפי אזור
         </Button>
