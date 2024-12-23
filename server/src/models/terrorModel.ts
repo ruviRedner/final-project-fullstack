@@ -16,6 +16,7 @@ export interface Terror{
 const terrorSchema = new Schema({
   iyear: {
     type: Number,
+    index: true,
     
   },
   imonth: {
@@ -24,6 +25,7 @@ const terrorSchema = new Schema({
   },
   region_txt: {
     type: String,
+    index:true
     
   },
   latitude: {
@@ -40,6 +42,7 @@ const terrorSchema = new Schema({
   },
   gname: {
     type: String,
+    index:true
     
   },
   nkill: {
@@ -52,12 +55,20 @@ const terrorSchema = new Schema({
   },
   city:{
     type: String,
+    index:true,
   },
   country_txt:{ 
     type: String,
+  },
+  summary:{
+    type: String,
+    index:true,
   }
 });
 
+terrorSchema.index({gname:1})
 
+terrorSchema.index({ nkill: 1, nwound: 1 });
+terrorSchema.index({ city: 1, gname: 1 });
 export const terrorModel = model("terror",terrorSchema)
 
