@@ -11,7 +11,7 @@ import terrorRouter from "./routes/terror.router";
 import orgRouter from "./routes/org.router";
 import CreateRouter from "./routes/create.router";
 import { handelShackConnection } from "./socket/io";
-import { getOrgNames } from "./service/create.service";
+import { getOrgNames, searchInText } from "./service/create.service";
 
 
 const PORT = process.env.PORT || 3000;
