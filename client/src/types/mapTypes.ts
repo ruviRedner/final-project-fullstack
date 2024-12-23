@@ -82,3 +82,18 @@ export const orgNames = [
     name: "Black Nationalists",
   },
 ];
+export interface TypeSearchText{
+  _id: string,
+  iyear: number,
+  imonth: number,
+  region_txt: string,
+  latitude: number,
+  longitude: number,
+  attacktype1_txt:string,
+  gname: string,
+  city: string,
+  country_txt: string,
+  summary:string
+  nwound?: number
+  nkill?: number
+}
