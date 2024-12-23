@@ -3,22 +3,25 @@ import { Get8Type } from "../../../types/typeFor8";
 import { TerrorResponce } from "../../../types/responce";
 import { socket } from "../../../App";
 import { BarChart } from "@mui/x-charts";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { orgNames } from "../../../types/mapTypes";
 
 const GraphByOrg: React.FC = () => {
   const [orgName, setOrgName] = useState("");
   const [data, setData] = useState<Get8Type[]>([]);
   const [isData, setIsData] = useState(true);
-
+   const handleChange = (event: SelectChangeEvent) => {
+      setOrgName(event.target.value);
+    };
   const handelOrg = async () => {
     socket.emit("get8", orgName, (res: TerrorResponce) => {
       if (res && Array.isArray(res.data)) {
         setData(res.data);
-        setIsData(res.data.length > 0); // עדכון אם יש נתונים
+        setIsData(res.data.length > 0); 
       } else {
         console.error("Invalid response data:", res);
         setData([]);
-        setIsData(false); // אין נתונים להצגה
+        setIsData(false); 
       }
     });
   };
@@ -49,12 +52,25 @@ const GraphByOrg: React.FC = () => {
             {!isData && <h3>אין נתונים להצגה</h3>}
             <div className="text">
               <h5>הקלד שם ארגון</h5>
-              <TextField
-                onChange={(e) => setOrgName(e.target.value)}
-                id="standard-basic"
-                label="org-name"
-                variant="standard"
-              />
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="region-select-label">ארגון</InputLabel>
+              <Select
+                labelId="region-select-label"
+                id="region-select"
+                value={orgName}
+                onChange={handleChange}
+                label="ארגון"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {orgNames.map((org, index) => (
+                  <MenuItem key={index} value={org.name}>
+                    {org.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
               <Button onClick={handelOrg}>חפש</Button>
             </div>
           </div>
