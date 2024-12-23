@@ -10,14 +10,21 @@ const [endYear,setEndYear] = useState("")
 const [startYear,setStartYear] = useState("")
 
   const [data, setData] = useState<Get3Type[]>([]);
+  const [isData, setIsData] = useState(true);
 
   const handelYearRange = async () => {
       socket.emit("get3", {startYear,endYear}, (res: TerrorResponce) => {
+        if(res.data.length <= 0) {
+          setIsData(false);
+          return;
+        }
         if (res && Array.isArray(res.data)) {
+          setIsData(true);
           setData(res.data);
         } else {
           console.error("Invalid response data:", res);
           setData([]);
+          setIsData(false);
         }
       });
     };
@@ -26,6 +33,7 @@ const [startYear,setStartYear] = useState("")
 
   return <div>
     <div className="container">
+    {!isData && <h3>אין נתונים להצגה</h3>}
       {data.length > 0 ? (
         <div>
           <h2>מידע על תקיפות לפי טווח שנים</h2>
