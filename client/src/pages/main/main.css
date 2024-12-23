@@ -1,15 +1,36 @@
-h1{
-    text-align: center;
+h1 {
+  text-align: center;
 }
-.main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgb(151, 192, 38);
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* .btn {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+} */
+.animation {
+  display: flex;
+  height: 100vh;
+}
+.gra {
+  flex: 1;
+  display: flex;
+  padding: 20px;
+  justify-content: flex-start;
+}
+.map{
+    padding: 20px;
 }
 .btn{
     display: flex;
-    justify-content: center;
-    gap: 200px;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
 }
+
