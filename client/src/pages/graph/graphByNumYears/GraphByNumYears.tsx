@@ -8,9 +8,15 @@ import { BarChart } from '@mui/x-charts';
 const GraphByNumYears:React.FC = () => {
      const [data, setData] = useState<Get3Type[]>([]);
      const [numYears,setNumYears] = useState("")
+     const [isData, setIsData] = useState(true);
       const handelYearNum = async () => {
            socket.emit("get4", numYears, (res: TerrorResponce) => {
+            if(res.data.length <= 0) {
+              setIsData(false);
+              return;
+            }
              if (res && Array.isArray(res.data)) {
+               setIsData(true);
                setData(res.data);
              } else {
                console.error("Invalid response data:", res);
@@ -25,6 +31,7 @@ const GraphByNumYears:React.FC = () => {
   return (
     <div>
         <div className="container">
+        {!isData && <h3>אין נתונים להצגה</h3>}
       {data.length > 0 ? (
         <div>
           <h2>מידע על {numYears} שנים אחרונות</h2>
