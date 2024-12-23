@@ -3,14 +3,18 @@ import { Terror } from "../models/terrorModel";
 import {
   createNewEvent,
   deleteEvent,
+  searchInText,
   updataEvent,
 } from "../service/create.service";
 import {
+  getDeadliestRegionsWithOrWithoutCoordinates,
   getIncidentsByOrganization,
   getIncidentsInYearRange,
   getListAttackTypeByTheMostCasualties,
   getOganizationsWithTheMostIncidentByRegion,
   getRecentYearsData,
+  getRegionWithTheHighestAverageCasualties,
+  getTop5OrganizationsPerRegion,
   getTop5OrganizationsWithTheMostIncidentByRegion,
   getTopOrganizationsByYear,
   getUniceIncidentInEveryMonthInYear,
@@ -95,21 +99,19 @@ export const handelShackConnection = (client: Socket) => {
       callback({ success: false, message: (error as Error).message });
     }
   });
-  client.on(
-    "get5",
-    async (data: { region: string; isGraph: boolean }, callback) => {
-      try {
-        const result = await getTop5OrganizationsWithTheMostIncidentByRegion(
-          data.region,
-          data.isGraph
-        );
+  client.on("get5", async (region: string, callback) => {
+    try {
+      console.log(region);
 
-        callback({ success: true, data: result });
-      } catch (error) {
-        callback({ success: false, message: (error as Error).message });
-      }
+      const result = await getTop5OrganizationsWithTheMostIncidentByRegion(
+        region
+      );
+
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
     }
-  );
+  });
   client.on("get6", async (region: string, callback) => {
     try {
       const result = await getOganizationsWithTheMostIncidentByRegion(region);
@@ -118,28 +120,60 @@ export const handelShackConnection = (client: Socket) => {
       callback({ success: false, message: (error as Error).message });
     }
   });
-  client.on("get7", async (year:string,callback) => {
+  client.on("get7", async (year: string, callback) => {
     try {
       const result = await getTopOrganizationsByYear(year);
       callback({ success: true, data: result });
-      
     } catch (error) {
       callback({ success: false, message: (error as Error).message });
-
-      
     }
   });
-  client.on("get8",async (orgName:string,callback) =>{
+  client.on("get8", async (orgName: string, callback) => {
     try {
       const result = await getIncidentsByOrganization(orgName);
       callback({ success: true, data: result });
-      
     } catch (error) {
       callback({ success: false, message: (error as Error).message });
-      
     }
-  }
-
-  )
-
+  });
+  client.on("get1Map", async (callback) => {
+    try {
+      const result = await getRegionWithTheHighestAverageCasualties();
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
+  client.on("get1MapByRegion", async (region: string, callback) => {
+    try {
+      const result = await getRegionWithTheHighestAverageCasualties(region);
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
+  client.on("get5TopForAllRegion", async (callback) => {
+    try {
+      const result = await getTop5OrganizationsPerRegion();
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
+  client.on("get1MapByOrgName", async (orgName: string, callback) => {
+    try {
+      const result = await getDeadliestRegionsWithOrWithoutCoordinates(orgName);
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
+  client.on("searchText", async (searchText: string, callback) => {
+    try {
+      const result = await searchInText(searchText);
+      callback({ success: true, data: result });
+    } catch (error) {
+      callback({ success: false, message: (error as Error).message });
+    }
+  });
 };
