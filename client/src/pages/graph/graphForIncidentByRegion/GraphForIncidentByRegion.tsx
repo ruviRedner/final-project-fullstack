@@ -16,26 +16,39 @@ const GraphForIncidentByRegion: React.FC = () => {
   const [data, setData] = useState<GetType5[]>([]);
   const [isGraph, setIsGraph] = useState(true);
   const [region, setRegion] = useState("");
+  const [isData, setIsData] = useState(true);
 
   const handelTop5 = async () => {
     setIsGraph(true);
     socket.emit("get5", { region, isGraph }, (res: TerrorResponce) => {
+      if(res.data.length <= 0) {
+        setIsData(false);
+        return;
+      }
       if (res && Array.isArray(res.data)) {
+        setIsData(true);
         setData(res.data);
       } else {
         console.error("Invalid response data:", res);
         setData([]);
+        setIsData(false)
       }
     });
   };
 
   const handelAll = async () => {
     socket.emit("get6", region, (res: TerrorResponce) => {
+      if(res.data.length <= 0) {
+        setIsData(false);
+        return;
+      }
       if (res && Array.isArray(res.data)) {
+        setIsData(true);
         setData(res.data);
       } else {
         console.error("Invalid response data:", res);
         setData([]);
+        setIsData(false);
       }
     });
   };
@@ -52,6 +65,7 @@ const GraphForIncidentByRegion: React.FC = () => {
   return (
     <div>
       <div className="container">
+      {!isData && <h3>אין נתונים להצגה</h3>}
         {data.length > 0 ? (
           <div>
             <h2>מידע על תקריות של ארגונים לפי אזור</h2>
