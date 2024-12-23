@@ -7,7 +7,6 @@ import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-
 const customIcon = new L.Icon({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
@@ -20,17 +19,17 @@ interface TerrorEventMapProps {
   events: {
     latitude: number;
     longitude: number;
-    title: string;
-    description: string;
-  }[];
+    popupContent?: React.ReactNode; 
+  }[]
+  height: string | number;
 }
 
-const TerrorEventMap: React.FC<TerrorEventMapProps> = ({ events }) => {
+const TerrorEventMap: React.FC<TerrorEventMapProps> = ({ events,height }) => {
   return (
     <div style={{ position: "relative", width: "100%" }}>
       <div
         style={{
-          height: "600px",
+          height: height,
           width: "100%",
           borderRadius: "15px",
           overflow: "hidden",
@@ -38,8 +37,8 @@ const TerrorEventMap: React.FC<TerrorEventMapProps> = ({ events }) => {
         }}
       >
         <MapContainer
-          center={[20, 0]} 
-          zoom={2}
+          center={[20, 0]}
+          zoom={4}
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
@@ -52,11 +51,7 @@ const TerrorEventMap: React.FC<TerrorEventMapProps> = ({ events }) => {
               position={[event.latitude, event.longitude]}
               icon={customIcon}
             >
-              <Popup>
-                <b>{event.title}</b>
-                <br />
-                {event.description}
-              </Popup>
+              <Popup>{event.popupContent}</Popup>
             </Marker>
           ))}
         </MapContainer>
