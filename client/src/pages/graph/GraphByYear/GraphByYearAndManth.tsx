@@ -12,6 +12,7 @@ const GraphByYearAndManth: React.FC = () => {
   const [data, setData] = useState<Get2Type[]>([]);
   const [result, setResult] = useState<Get7Type[]>([]);
   const [toggle, setToggle] = useState<boolean | null>(null);
+  const [isData, setIsData] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setYear(e.target.value);
@@ -20,11 +21,17 @@ const GraphByYearAndManth: React.FC = () => {
   const handleYear = async () => {
     setToggle(false);
     socket.emit("get2", year, (res: TerrorResponce) => {
+      if(res.data.length <= 0) {
+        setIsData(false);
+        return;
+      }
       if (res && Array.isArray(res.data)) {
+        setIsData(true);
         setData(res.data);
       } else {
         console.error("Invalid response data:", res);
         setData([]);
+        setIsData(false);
       }
     });
   };
@@ -32,16 +39,21 @@ const GraphByYearAndManth: React.FC = () => {
   const handleOrg = async () => {
     setToggle(true);
     socket.emit("get7", year, (res: TerrorResponce) => {
+      if(res.data.length <= 0) {
+        setIsData(false);
+        return;
+      }
       if (res && Array.isArray(res.data)) {
+        setIsData(true);
         setResult(res.data);
       } else {
         console.error("Invalid response data:", res);
         setResult([]);
+        setIsData(false);
       }
     });
   };
 
-  // Determine xAxisData and seriesData based on toggle state
   const xAxisData =
     toggle === false
       ? data.map((item) => item.month)
@@ -57,6 +69,7 @@ const GraphByYearAndManth: React.FC = () => {
 
   return (
     <div className="container">
+      {!isData && <h3>אין נתונים להצגה</h3>}
       {toggle !== null && (data.length > 0 || result.length > 0) ? (
         <div>
           <h2>
