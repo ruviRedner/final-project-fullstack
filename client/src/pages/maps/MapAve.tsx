@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import { regions } from "../../types/typeFor5";
 import {
@@ -17,6 +18,7 @@ import {
   TypeFor5PerRegion,
   TypeForCasualtiesByOrgName,
   TypeForOrg,
+  TypeSearchText,
 } from "../../types/mapTypes";
 
 const MapAve: React.FC = () => {
@@ -26,16 +28,20 @@ const MapAve: React.FC = () => {
   const [region, setRegion] = useState("");
   const [orgName, setOrgName] = useState("");
   const [isData, setIsData] = useState(true);
+  const [text, setText] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setRegion(event.target.value);
+  };
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
   };
   const handleChangeOrgName = (event: SelectChangeEvent) => {
     setOrgName(event.target.value);
   };
   const handelRegion = async () => {
     socket.emit("get1MapByRegion", region, (res: TerrorResponce) => {
-      if(res.data.length <= 0) {
+      if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
@@ -63,7 +69,7 @@ const MapAve: React.FC = () => {
   const handelTop5ByRegion = async () => {
     socket.emit("get5", region, (res: TerrorResponce) => {
       console.log(region);
-      if(res.data.length <= 0) {
+      if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
@@ -100,7 +106,7 @@ const MapAve: React.FC = () => {
   const handelTop5ForAllRegion = async () => {
     socket.emit("get5TopForAllRegion", (res: TerrorResponce) => {
       console.log(res.data);
-      if(res.data.length <= 0) {
+      if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
@@ -138,22 +144,57 @@ const MapAve: React.FC = () => {
   const handelOrgName = async () => {
     socket.emit("get1MapByOrgName", orgName, (res: TerrorResponce) => {
       console.log(res.data);
-      if(res.data.length <= 0) {
+      if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
-      
+
       if (res && Array.isArray(res.data)) {
         setIsData(true);
-        const mappedEvents = res.data.map((event:TypeForCasualtiesByOrgName, index: number) => ({
+        const mappedEvents = res.data.map(
+          (event: TypeForCasualtiesByOrgName, index: number) => ({
+            latitude: event.latitude || 0,
+            longitude: event.longitude || 0,
+            popupContent: (
+              <div>
+                <h4>{event.city || `Event #${index + 1}`}</h4>
+                <p>כמות נפגעים: {event.TotalCasualties || "Unknown"}</p>
+              </div>
+            ),
+          })
+        );
+        setEvents(mappedEvents);
+        setRegion("");
+      } else {
+        console.error("Invalid response data:", res);
+        setEvents([]);
+        setIsData(false);
+      }
+    });
+  };
+  const handleText = async () => {
+    socket.emit("searchText", text, (res: TerrorResponce) => {
+      console.log(res.data);
+      if (res.data.length <= 0) {
+        setIsData(false);
+        return;
+      }
+      if (res && Array.isArray(res.data)) {
+        setIsData(true);
+        const mappedEvents = res.data.map((event: TypeSearchText, index: number) => ({
           latitude: event.latitude || 0,
           longitude: event.longitude || 0,
           popupContent: (
             <div>
-              <h4>{event.city || `Event #${index + 1}`}</h4>
-              <p>כמות נפגעים: {event.TotalCasualties || "Unknown"}</p>
+              <h4>אזור:{event.region_txt || `Event #${index + 1}`}</h4>
+              <p> עיר: {event.city || "Unknown"}</p>
+              <p>מדינה: {event.country_txt || "Unknown"}</p>
+              <p>שם הארגון:{event.gname || "Unknown"}</p>
+              <p>סוג התקיפה:{event.attacktype1_txt || "Unknown"}</p>
+              <p>בשנת:{event.iyear || "Unknown"}</p>
+              <p>בחודש:{event.imonth || "Unknown"}</p>
             </div>
-          ), 
+          ),
         }));
         setEvents(mappedEvents);
         setRegion("");
@@ -163,11 +204,11 @@ const MapAve: React.FC = () => {
         setIsData(false);
       }
     });
-  }
+  };
 
   useEffect(() => {
     socket.emit("get1Map", (res: TerrorResponce) => {
-      if(res.data.length <= 0) {
+      if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
@@ -192,7 +233,6 @@ const MapAve: React.FC = () => {
     });
   }, []);
 
-
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <div
@@ -201,7 +241,6 @@ const MapAve: React.FC = () => {
           padding: "20px",
           backgroundColor: "#f9f9f9",
           display: "flex",
-          gap:"5px",
           flexDirection: "column",
           justifyContent: "flex-start",
           boxShadow: "2px 0 5px rgba(0, 0, 0, 0.1)",
@@ -237,7 +276,7 @@ const MapAve: React.FC = () => {
           קבל 5 ארגונים המובילים בכל האזורים
         </Button>
 
-        <h5>הקלד שם ארגון</h5>
+        <h5>אנא בחר ארגון</h5>
         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="region-select-label">ארגון</InputLabel>
           <Select
@@ -258,10 +297,19 @@ const MapAve: React.FC = () => {
           </Select>
         </FormControl>
         <Button onClick={handelOrgName}>חפש</Button>
+        <h5>הקלד טקסט...</h5>
+        <TextField
+          value={text}
+          onChange={handleChangeInput}
+          id="standard-basic"
+          label="Year"
+          variant="standard"
+        />
+        <Button onClick={handleText}>חפש</Button>
       </div>
 
       <div style={{ flex: 3 }}>
-      {!isData && <h3>אין נתונים להצגה</h3>}
+        {!isData && <h3>אין נתונים להצגה</h3>}
         {events.length > 0 ? (
           <TerrorEventMap height={"600px"} events={events} />
         ) : (
