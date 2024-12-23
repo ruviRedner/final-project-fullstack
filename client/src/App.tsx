@@ -10,6 +10,7 @@ import GrhaphByRange from "./pages/graph/graphRangeYear/GrhaphByRange";
 import GraphByNumYears from "./pages/graph/graphByNumYears/GraphByNumYears";
 import GraphForIncidentByRegion from "./pages/graph/graphForIncidentByRegion/GraphForIncidentByRegion";
 import GraphByOrg from "./pages/graph/graphByOrg/GraphByOrg";
+import MapAve from "./pages/maps/MapAve";
 // import { TerrorResponce } from './types/responce';
 // import { Terror } from './types/newTerror';
 export const socket = io("http://localhost:9000");
@@ -191,6 +192,7 @@ const App: React.FC = () => {
           <Route path="/year-number" element={<GraphByNumYears />} />
           <Route path="/region-top" element={<GraphForIncidentByRegion />} />
           <Route path="/year-org" element={<GraphByOrg />} />
+          <Route path="/map-1" element={<MapAve />} />
           <Route path="/graph-manege" element={<ManegeGraph />} />
         </Routes>
       </div>
