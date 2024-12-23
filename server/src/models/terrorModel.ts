@@ -11,6 +11,7 @@ export interface Terror{
   nwound: number;
   city:string;
   country_txt: string;
+  summary: string;
 
 }
 const terrorSchema = new Schema({
