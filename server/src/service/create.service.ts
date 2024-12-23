@@ -82,7 +82,7 @@ export const getOrgNames = async () => {
     return handleBadRequest("Bad request", error);
   }
 };
-export const searchInText = async (str: string) => {
+export const searchInText = async (str: string) => { 
   try {
     const regex = new RegExp(str, "i");
     const result = await terrorModel.find({ summary: regex }).limit(30);
