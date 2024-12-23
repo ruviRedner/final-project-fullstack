@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ColumnChart } from "@opd/g2plot-react";
-import "./graph.css"
 
 const GraphAnimation: React.FC = () => {
   const [data, setData] = useState([
@@ -27,6 +26,7 @@ const GraphAnimation: React.FC = () => {
 
 
   const config = {
+    height:300,
     xField: "type",
     yField: "value",
     columnWidthRatio: 0.6, 
