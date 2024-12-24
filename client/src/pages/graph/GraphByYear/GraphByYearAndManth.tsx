@@ -97,6 +97,7 @@ const GraphByYearAndManth: React.FC = () => {
             id="standard-basic"
             label="Year"
             variant="standard"
+            value={year}
           />
           <Button onClick={handleYear}>חפש</Button>
           <Button onClick={handleOrg}>הצג תקיפות של ארגון</Button>
