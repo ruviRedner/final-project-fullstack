@@ -5,6 +5,8 @@ import "./main.css";
 import GraphAnimation from "../../components/graphs/GraphAnimation";
 import { useNavigate } from "react-router-dom";
 import MapsAnimation from "../../components/maps/MapsAnimation";
+import Crud from "../../components/crud/Crud";
+import { Box } from "@mui/material";
 
 const Main: React.FC = () => {
   const navigate = useNavigate();
@@ -25,17 +27,42 @@ const Main: React.FC = () => {
           <div className="map">
             <MapsAnimation />
           </div>
-          <div className="btn">
-          <Button onClick={handelGraph} variant="contained">
-            הצג גרף
-          </Button>
-          <Button onClick={handelMap} variant="contained">
-            הצג מפה{" "}
-          </Button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 6.5,
+              maxWidth: "200px", 
+              margin: "0 auto",
+              marginTop: "20px",
+              marginBottom: "20px"
+            }}
+          >
+            
+              <Button onClick={handelGraph} variant="contained" fullWidth>
+                הצג גרף
+              </Button>
+              <Button onClick={handelMap} variant="contained"fullWidth>
+                הצג מפה
+              </Button>
+              <Crud
+                actionType="create"
+                buttonLabel="יצירת אירוע"
+                dialogTitle="יצירת אירוע חדש"
+              />
+              <Crud
+                actionType="update"
+                buttonLabel="עדכון אירוע"
+                dialogTitle="עדכון אירוע"
+              />
+              <Crud
+                actionType="delete"
+                buttonLabel="מחיקת אירוע"
+                dialogTitle="מחיקת אירוע"
+              />
+          </Box>
         </div>
-        </div>
-
-        
       </div>
     </>
   );
