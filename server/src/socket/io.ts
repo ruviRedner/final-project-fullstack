@@ -19,6 +19,7 @@ import {
   getTopOrganizationsByYear,
   getUniceIncidentInEveryMonthInYear,
 } from "../service/terror.service";
+import { io } from "../app";
 
 export const handelShackConnection = (client: Socket) => {
   console.log(`[socket.io]New Connection ${client.id} `);
@@ -28,36 +29,35 @@ export const handelShackConnection = (client: Socket) => {
   client.on("newTeror", async (data: Terror, callback) => {
     try {
       const newTerror = await createNewEvent(data);
-      console.log(newTerror);
 
       callback({
         success: true,
-        message: "Event created successfully",
+        message: "האירוע נוסף בהצלחה",
         result: newTerror,
       });
+      io.emit("change-data", { action: "create", data: newTerror });
     } catch (error) {
       callback({ success: false, error: (error as Error).message });
     }
   });
-  client.on("delete", async (data: string, callback) => {
+  client.on("delete", async (id: string, callback) => {
     try {
-      const del = await deleteEvent(data);
-      callback({ success: true, message: del });
+      const result = await deleteEvent(id);
+      callback({ success: true, message: "נמחק בהצלחה" });
+      io.emit("change-data", { action: "delete", data: result });
     } catch (error) {
-      callback({ success: false, message: "event deleted went wrong" });
+      callback({ success: false, message: (error as Error).message });
     }
   });
-  client.on(
-    "update",
-    async (data: { id: string; update: Terror }, callback) => {
-      try {
-        const updated = await updataEvent(data.id, data.update);
-        callback({ success: true, message: updated });
-      } catch (error) {
-        callback({ success: false, message: "event updated went wrong" });
-      }
+  client.on("update", async (id: string, update: Terror, callback) => {
+    try {
+      const result = await updataEvent(id, update);
+      callback({ success: true, message: "העדכון הצליח" });
+      io.emit("change-data", { action: "update", data: result });
+    } catch (error) {
+      callback({ success: false, message: "event updated went wrong" });
     }
-  );
+  });
   client.on("get1", async (callback) => {
     try {
       const result = await getListAttackTypeByTheMostCasualties();
@@ -101,8 +101,6 @@ export const handelShackConnection = (client: Socket) => {
   });
   client.on("get5", async (region: string, callback) => {
     try {
-      console.log(region);
-
       const result = await getTop5OrganizationsWithTheMostIncidentByRegion(
         region
       );
