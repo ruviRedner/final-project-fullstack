@@ -4,37 +4,39 @@ import { handleBadRequest } from "../utils/ErrorHandle";
 export const createNewEvent = async (newEvent: Terror) => {
   try {
     const {
+      iyear,
+      imonth,
+      region_txt,
       country_txt,
       city,
       nwound,
       nkill,
       gname,
       attacktype1_txt,
+      summary,
       longitude,
-      latitude,
-      region_txt,
-      imonth,
-      iyear,
+      latitube,
     } = newEvent;
     if (
+      !summary ||
       !country_txt ||
       !city ||
       !nkill ||
       !gname ||
       !attacktype1_txt ||
       !longitude ||
-      !latitude ||
+      !latitube ||
       !region_txt ||
       !imonth ||
       !iyear ||
       !nwound
     ) {
-      throw new Error("Invalid data");
+      throw new Error("Invalid data format");
     }
     const data = await terrorModel.create(newEvent);
     return data;
   } catch (error) {
-    return handleBadRequest("Invalid data", error);
+    throw new Error((error as Error).message);
   }
 };
 
@@ -43,14 +45,15 @@ export const deleteEvent = async (id: string) => {
     if (!id) {
       throw new Error("ID is requierd");
     }
-    const findId = terrorModel.findById(id);
+    const findId = await terrorModel.findByIdAndDelete(id);
+
     if (!findId) {
-      throw new Error("ID not found");
+      throw new Error("id not found");
     }
-    await terrorModel.deleteOne(findId);
+
     return { message: "Event deleted successfully" };
   } catch (error) {
-    return handleBadRequest("Failed to delete event", error);
+    throw new Error((error as Error).message);
   }
 };
 export const updataEvent = async (id: string, update: Terror) => {
@@ -68,21 +71,20 @@ export const updataEvent = async (id: string, update: Terror) => {
     }
     return findId;
   } catch (error) {
-    return handleBadRequest("Bad Request", error);
+    throw new Error((error as Error).message);
   }
 };
 
 export const getOrgNames = async () => {
   try {
     const data = await terrorModel.distinct("gname");
-    console.log(data);
 
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
   }
 };
-export const searchInText = async (str: string) => { 
+export const searchInText = async (str: string) => {
   try {
     const regex = new RegExp(str, "i");
     const result = await terrorModel.find({ summary: regex }).limit(30);
