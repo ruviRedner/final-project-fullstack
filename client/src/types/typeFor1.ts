@@ -1,4 +1,4 @@
-export interface Get1Type{
-    attackType: string;
-    totalCasualties: number;
+export interface Get1Type {
+  attackType: string;
+  totalCasualties: number;
 }
