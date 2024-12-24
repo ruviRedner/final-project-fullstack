@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import {
-  
   getDeadliestRegionsWithOrWithoutCoordinates,
   getIncidentsInYearRange,
   getListAttackTypeByTheMostCasualties,
@@ -123,32 +122,3 @@ export const fetchIncidentOfTheMostDhed = async (
     res.status(500).json({ success: false, message: (error as Error).message });
   }
 };
-
-// export const getOrganizationsOrIncidents = async (
-//   req: Request,
-//   res: Response
-// ): Promise<void> => {
-//   try {
-//     const { year, organizationName } = req.params;
-
-//     if (!year) {
-//       res.status(400).json({ error: "Year is required" });
-//     }
-
-//     const yearNumber = parseInt(year as string);
-
-//     if (isNaN(yearNumber)) {
-//       res.status(400).json({ error: "Invalid year format" });
-//     }
-
-//     const result = await getOrganizationsOrIncidentsByYear(
-//       yearNumber,
-//       organizationName as string
-//     );
-
-//     res.status(200).json({ success: true, data: result });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: (error as Error).message });
-//   }
-
