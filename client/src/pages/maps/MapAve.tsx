@@ -23,7 +23,12 @@ import {
 
 const MapAve: React.FC = () => {
   const [events, setEvents] = useState<
-    { latitude: number; longitude: number; popupContent: React.ReactNode }[]
+    {
+      id?: string;
+      latitude: number;
+      longitude: number;
+      popupContent: React.ReactNode;
+    }[]
   >([]);
   const [region, setRegion] = useState("");
   const [orgName, setOrgName] = useState("");
@@ -68,7 +73,6 @@ const MapAve: React.FC = () => {
   };
   const handelTop5ByRegion = async () => {
     socket.emit("get5", region, (res: TerrorResponce) => {
-      console.log(region);
       if (res.data.length <= 0) {
         setIsData(false);
         return;
@@ -105,7 +109,6 @@ const MapAve: React.FC = () => {
   };
   const handelTop5ForAllRegion = async () => {
     socket.emit("get5TopForAllRegion", (res: TerrorResponce) => {
-      console.log(res.data);
       if (res.data.length <= 0) {
         setIsData(false);
         return;
@@ -143,7 +146,6 @@ const MapAve: React.FC = () => {
   };
   const handelOrgName = async () => {
     socket.emit("get1MapByOrgName", orgName, (res: TerrorResponce) => {
-      console.log(res.data);
       if (res.data.length <= 0) {
         setIsData(false);
         return;
@@ -174,30 +176,31 @@ const MapAve: React.FC = () => {
   };
   const handleText = async () => {
     socket.emit("searchText", text, (res: TerrorResponce) => {
-      console.log(res.data);
       if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
       if (res && Array.isArray(res.data)) {
         setIsData(true);
-        const mappedEvents = res.data.map((event: TypeSearchText, index: number) => ({
-          latitude: event.latitude || 0,
-          longitude: event.longitude || 0,
-          popupContent: (
-            <div>
-              <h4>אזור:{event.region_txt || `Event #${index + 1}`}</h4>
-              <p> עיר: {event.city || "Unknown"}</p>
-              <p>מדינה: {event.country_txt || "Unknown"}</p>
-              <p>שם הארגון:{event.gname || "Unknown"}</p>
-              <p>סוג התקיפה:{event.attacktype1_txt || "Unknown"}</p>
-              <p>בשנת:{event.iyear || "Unknown"}</p>
-              <p>בחודש:{event.imonth || "Unknown"}</p>
-            </div>
-          ),
-        }));
+        const mappedEvents = res.data.map(
+          (event: TypeSearchText, index: number) => ({
+            latitude: event.latitude || 0,
+            longitude: event.longitude || 0,
+            popupContent: (
+              <div>
+                <h4>אזור:{event.region_txt || `Event #${index + 1}`}</h4>
+                <p> עיר: {event.city || "Unknown"}</p>
+                <p>מדינה: {event.country_txt || "Unknown"}</p>
+                <p>שם הארגון:{event.gname || "Unknown"}</p>
+                <p>סוג התקיפה:{event.attacktype1_txt || "Unknown"}</p>
+                <p>בשנת:{event.iyear || "Unknown"}</p>
+                <p>בחודש:{event.imonth || "Unknown"}</p>
+              </div>
+            ),
+          })
+        );
         setEvents(mappedEvents);
-        setRegion("");
+        setText("");
       } else {
         console.error("Invalid response data:", res);
         setEvents([]);
@@ -231,6 +234,50 @@ const MapAve: React.FC = () => {
         setIsData(false);
       }
     });
+  }, []);
+  useEffect(() => {
+    socket.on("change-data", (data: { action: string; data: any }) => {
+      setEvents((prevEvents) => {
+        if (data.action === "create") {
+          return [
+            ...prevEvents,
+            {
+              latitude: data.data.latitude || 0,
+              longitude: data.data.longitude || 0,
+              popupContent: (
+                <div>
+                  <h4>{data.data.region}</h4>
+                  <p>ממוצע נפגעים: {data.data.averageCasualties}</p>
+                </div>
+              ),
+            },
+          ];
+        } else if (data.action === "update") {
+          return prevEvents.map((event) =>
+            event.id === data.data.id
+              ? {
+                  ...event,
+                  latitude: data.data.latitude || 0,
+                  longitude: data.data.longitude || 0,
+                  popupContent: (
+                    <div>
+                      <h4>{data.data.region}</h4>
+                      <p>ממוצע נפגעים: {data.data.averageCasualties}</p>
+                    </div>
+                  ),
+                }
+              : event
+          );
+        } else if (data.action === "delete") {
+          return prevEvents.filter((event) => event.id !== data.data.id);
+        }
+        return prevEvents;
+      });
+    });
+
+    return () => {
+      socket.off("change-data");
+    };
   }, []);
 
   return (
