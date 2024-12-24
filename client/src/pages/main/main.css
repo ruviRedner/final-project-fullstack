@@ -25,12 +25,13 @@ h1 {
 .map{
     padding: 20px;
 }
-.btn{
+/* .btn{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
-    
-}
+    width: 100px;
+    font-size: 2px;
+} */
 
