@@ -121,7 +121,6 @@ export const getTerroristGroupWithTheMostCasualties = async () => {
       },
       { $sort: { amount: -1 } },
     ]);
-    console.log(data);
   } catch (error) {
     return handleBadRequest("Bad request", error);
   }
@@ -186,7 +185,6 @@ export const getIncidentsInYearRange = async (
         },
       },
     ]);
-    console.log(data);
     return data;
   } catch (err) {
     return handleBadRequest("Bad request", err);
@@ -221,7 +219,6 @@ export const getRecentYearsData = async (range: string) => {
       },
     ]);
 
-    console.log(data);
     return data;
   } catch (err) {
     return handleBadRequest("Bad request", err);
@@ -258,7 +255,7 @@ export const getTop5OrganizationsWithTheMostIncidentByRegion = async (
     ];
 
     const data = await terrorModel.aggregate(pipeline);
-    console.log(data);
+
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
@@ -302,7 +299,7 @@ export const getTop5OrganizationsPerRegion = async () => {
     ];
 
     const data = await terrorModel.aggregate(pipeline);
-    console.log(data);
+
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
@@ -339,7 +336,7 @@ export const getOganizationsWithTheMostIncidentByRegion = async (
         },
       },
     ]);
-    console.log(data);
+
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
@@ -394,7 +391,6 @@ export const getDeadliestRegionsWithOrWithoutCoordinates = async (
       },
     ]);
 
-    console.log(data);
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
@@ -425,7 +421,6 @@ export const getIncidentsByOrganization = async (organizationName: string) => {
       },
     ]);
 
-    console.log(data);
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
@@ -458,7 +453,6 @@ export const getTopOrganizationsByYear = async (year: string) => {
       },
     ]);
 
-    console.log(data);
     return data;
   } catch (error) {
     return handleBadRequest("Bad request", error);
