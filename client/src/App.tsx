@@ -11,7 +11,7 @@ import GraphByNumYears from "./pages/graph/graphByNumYears/GraphByNumYears";
 import GraphForIncidentByRegion from "./pages/graph/graphForIncidentByRegion/GraphForIncidentByRegion";
 import GraphByOrg from "./pages/graph/graphByOrg/GraphByOrg";
 import MapAve from "./pages/maps/MapAve";
-export const socket = io("http://localhost:9000");
+export const socket = io("https://final-project-fullstack-1-7k5w.onrender.com");
 const App: React.FC = () => {
   return (
     <>
