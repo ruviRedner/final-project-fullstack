@@ -34,7 +34,6 @@ app.use("/api/postTerror", CreateRouter);
 app.get("/ping", (req: Request, res: Response) => {
   res.status(200).send("pong");
 });
-// seed()
 io.on("connection", handelShackConnection);
 server.listen(PORT, () =>
   console.log(`Listening on port ${PORT},visit http://localhost:${PORT}`)
