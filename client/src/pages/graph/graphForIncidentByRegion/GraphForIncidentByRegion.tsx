@@ -19,6 +19,8 @@ const GraphForIncidentByRegion: React.FC = () => {
   const [isData, setIsData] = useState(true);
 
   const handelTop5 = async () => {
+    console.log(isGraph);
+    
     setIsGraph(true);
     socket.emit("get5",  region, (res: TerrorResponce) => {
       if(res.data.length <= 0) {
