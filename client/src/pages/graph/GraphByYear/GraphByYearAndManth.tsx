@@ -19,6 +19,8 @@ const GraphByYearAndManth: React.FC = () => {
   };
 
   const handleYear = async () => {
+    setData([]);
+  setResult([]);
     setToggle(false);
     socket.emit("get2", year, (res: TerrorResponce) => {
       if(res.data.length <= 0) {
@@ -39,6 +41,8 @@ const GraphByYearAndManth: React.FC = () => {
   const handleOrg = async () => {
     setToggle(true);
     socket.emit("get7", year, (res: TerrorResponce) => {
+      console.log(res.data);
+      
       if(res.data.length <= 0) {
         setIsData(false);
         return;

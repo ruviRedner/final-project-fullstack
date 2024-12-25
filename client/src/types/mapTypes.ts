@@ -4,11 +4,16 @@ export interface Ave {
   latitude: number;
   longitude: number;
 }
+export interface Organization {
+  name: string;
+  incident: number;
+}
+
 export interface TypeFor5InAllRegion {
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
   region: string;
-  topOrganizations: string[];
+  topOrganizations: Organization[];
 }
 export interface TypeFor5PerRegion {
   latitube: number;

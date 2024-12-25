@@ -109,11 +109,13 @@ const MapAve: React.FC = () => {
   };
   const handelTop5ForAllRegion = async () => {
     socket.emit("get5TopForAllRegion", (res: TerrorResponce) => {
+      console.log(res.data);
+  
       if (res.data.length <= 0) {
         setIsData(false);
         return;
       }
-
+  
       if (res && Array.isArray(res.data)) {
         setIsData(true);
         const mappedEvents = res.data.map(
@@ -123,11 +125,13 @@ const MapAve: React.FC = () => {
             popupContent: (
               <div>
                 <h3>{regionData.region}</h3>
-                <h4>ה5 ארגונים המובילים:</h4>
+                <h4>ה-5 ארגונים המובילים:</h4>
                 <ul>
                   {regionData.topOrganizations.map(
-                    (org: string, index: number) => (
-                      <li key={index}>{org}</li>
+                    (org: { name: string; incident: number }, index: number) => (
+                      <li key={index}>
+                        {org.name} - {org.incident} אירועים
+                      </li>
                     )
                   )}
                 </ul>
@@ -135,7 +139,7 @@ const MapAve: React.FC = () => {
             ),
           })
         );
-
+  
         setEvents(mappedEvents);
       } else {
         console.error("Invalid response data:", res);
@@ -144,6 +148,7 @@ const MapAve: React.FC = () => {
       }
     });
   };
+  
   const handelOrgName = async () => {
     socket.emit("get1MapByOrgName", orgName, (res: TerrorResponce) => {
       if (res.data.length <= 0) {

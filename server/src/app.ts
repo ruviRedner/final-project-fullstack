@@ -19,7 +19,7 @@ export const app = express();
 export const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
-    origin: "https://terror-good.netlify.app",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"], 
     credentials: true, 
   },
