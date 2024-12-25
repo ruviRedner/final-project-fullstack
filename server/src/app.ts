@@ -11,7 +11,7 @@ import terrorRouter from "./routes/terror.router";
 import orgRouter from "./routes/org.router";
 import CreateRouter from "./routes/create.router";
 import { handelShackConnection } from "./socket/io";
-import { seed } from "./service/terror.service";
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,8 +19,9 @@ export const app = express();
 export const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: "*",
+    origin: "https://terror-good.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true, 
   },
 });
 
